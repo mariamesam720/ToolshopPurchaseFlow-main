@@ -1,34 +1,61 @@
-const {expect} = require('@playwright/test');
+
+const { expect } = require('@playwright/test');
+
 class HomePage {
   constructor(page) {
     this.page = page;
+
+    // Locators
     this.searchInput = page.getByRole('textbox', { name: 'Search' });
     this.searchButton = page.getByRole('button', { name: 'Search' });
-    this.caption = page.getByRole('heading', { name: /^Searched for:/ });
-    this.productLinks = page.locator('a[href^="/product/"]');
+    this.caption = page.getByRole('heading', {
+      name: /^Searched for:/
+    });
 
+    this.productCards = page.locator('a.card');
   }
 
-  async open() { await this.page.goto('/'); }
-  //actions 
+  // Actions
+  async open() {
+    await this.page.goto('/');
+  }
+
   async search(term) {
     await this.searchInput.fill(term);
     await this.searchButton.click();
   }
 
-  //assertions
-  async expectCaption(term) { await expect(this.caption).toHaveText(`Searched for: ${term}`); }
-  // assert on the number of results returned is only one and that the name of the product is as expected
- async expectSingleResultNamed(name) {
-    const matchingProduct = this.productLinks.filter({
+  // Reusable product locator
+  getProductCard(name) {
+    return this.productCards.filter({
       has: this.page.getByRole('heading', {
         name,
         exact: true
       })
     });
+  }
 
-    await expect(matchingProduct).toHaveCount(1);
-    await expect(matchingProduct).toBeVisible();
+  // Assertions
+  async expectCaption(term) {
+    await expect(this.caption).toHaveText(`Searched for: ${term}`);
+  }
+
+  async expectSingleResultNamed(name) {
+    await expect(this.productCards).toHaveCount(1);
+
+    const product = this.getProductCard(name);
+    await expect(product).toBeVisible();
+  }
+
+  // Open the search result
+  async openSingleResult(name) {
+    await expect(this.productCards).toHaveCount(1);
+
+    const product = this.getProductCard(name);
+    await expect(product).toBeVisible();
+
+    await product.click(); 
   }
 }
+
 module.exports = { HomePage };

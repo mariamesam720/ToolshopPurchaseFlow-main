@@ -19,5 +19,6 @@ test.describe('Search', () => {
     await home.search(searchTerm);
     await home.expectCaption(searchTerm);
     await home.expectSingleResultNamed(searchTerm);
+    await home.openSingleResult();
   });
 });

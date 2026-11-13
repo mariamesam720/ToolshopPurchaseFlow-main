@@ -1,0 +1,7 @@
+{
+  "user": { "email": "customer@practicesoftwaretesting.com", "password": "welcome01", "fullName": "Jane Doe" },
+  "searchTerm": "Thor Hammer",
+  "productName": "Thor Hammer",
+  "productPrice": 19.99,
+  "quantity": 1
+}
