@@ -10,7 +10,41 @@ class CheckoutPage {
     this.linePrice = page.locator('[data-test="line-price"]');
     this.cartTotal = page.locator('[data-test="cart-total"]');
     this.proceedToSignIn = page.locator('[data-test="proceed-1"]');
+    // locators of step 2
+    this.alreadyLoggedIn = page.getByText(/you are already logged in/i);
+    this.proceedToCheckout = page.getByRole('button', { name: 'Proceed to checkout' });
+
+    // locators of step 3
+    this.street = page.getByRole('textbox', { name: 'Street' });
+    this.city = page.getByRole('textbox', { name: 'City' });
+    this.state = page.getByRole('textbox', { name: 'State' });
+    this.houseNumber = page.getByRole('textbox', { name: 'House number' });
+    this.postalCode = page.getByRole('textbox', { name: 'Postal code' });
+    this.proceedToPayment = page.getByRole('button', { name: 'Proceed to payment' });
+
+    //  locators for payment (step 4)
+    this.paymentMethod = page.getByRole('combobox', { name: 'Payment method' });
+    this.cardNumber = page.getByRole('textbox', { name: 'Credit card number' });
+    this.expiry = page.getByRole('textbox', { name: 'Expiration date' });
+    this.cvv = page.getByRole('textbox', { name: 'CVV' });
+    this.cardHolder = page.getByRole('textbox', { name: 'Cardholder name' });
+    this.checkPayment = page.getByRole('button', { name: 'Check payment' });
+    this.paymentSuccess = page.getByRole('status', { name: 'Payment was successful' });
+        this.confirmbutton = page.getByRole('button', { name: 'Confirm' });
+
+    this.orderConfirmation = page.getByTestId('order-confirmation');
     }
+
+
+
+
+async fillBillingAddress(billing) {
+    await this.street.fill(billing.street);
+    await this.city.fill(billing.city);
+    await this.state.fill(billing.state);
+    await this.houseNumber.fill(billing.houseNumber);
+    await this.postalCode.fill(billing.postalCode);
+  }
 
 
 // assert One line: Thor Hammer × 1; line price = unit price × quantity; total = line price 
@@ -34,6 +68,45 @@ async expectPricesConsistent() {
 
 async proceedFromCart() {
   await this.proceedToSignIn.click();
+}
+
+// assert sign-in skipped
+async expectSignInSkipped() {
+  await expect(this.alreadyLoggedIn).toBeVisible();
+}
+async proceedFromSignIn() {
+  await this.proceedToCheckout.click();
+}
+
+// assert billing prefilled
+async expectBillingPrefilled(b) {
+
+    await expect(this.street).toHaveValue(b.street);
+    await expect(this.city).toHaveValue(b.city);
+    await expect(this.state).toHaveValue(b.state);
+    await expect(this.houseNumber).toHaveValue(b.houseNumber);
+    await expect(this.postalCode).toHaveValue(b.postalCode);
+  }
+  async proceedFromBilling() { await this.proceedToPayment.click(); }
+
+  //step 4: payment
+    async pay(card) {
+      await this.paymentMethod.selectOption(card.method);
+      await this.cardNumber.fill(card.number);
+      await this.expiry.fill(card.expiry);
+      await this.cvv.fill(card.cvv);
+      await this.cardHolder.fill(card.holder);
+      await this.checkPayment.click();
+    }
+    async expectPaymentSuccessful() { await expect(this.paymentSuccess).toHaveText('Payment was successful'); }
+// step 5: confirm 
+  async confirmOrder() { await this.confirmbutton.click(); }
+
+async expectOrderConfirmedWithInvoice() {
+    await expect(this.orderConfirmation).toContainText(/INV-\d+/);
+
+    const invoice = await this.orderConfirmation.locator('text=/INV-\\d+/').textContent();
+    return invoice;
 }
   }  
 

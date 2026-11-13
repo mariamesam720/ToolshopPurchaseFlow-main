@@ -1,0 +1,20 @@
+{
+  "user": { "email": "customer@practicesoftwaretesting.com", "password": "welcome01", "fullName": "Jane Doe" },
+  "searchTerm": "Thor Hammer",
+  "productName": "Thor Hammer",
+  "quantity": 1,
+  "billing": {
+    "street": "Test street 98",
+    "city": "Vienna",
+    "state": "New Jersey",
+    "houseNumber": "98",
+    "postalCode": "1010"
+  },
+  "card": {
+    "method": "credit-card",
+    "number": "1111-1111-1111-1111",
+    "expiry": "12/2030",
+    "cvv": "123",
+    "holder": "Jane Doe"
+  }
+}
