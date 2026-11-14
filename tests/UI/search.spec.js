@@ -1,9 +1,9 @@
-const { test } = require('@playwright/test');
-const { LoginPage } = require('../../pages/LoginPage');
-const { AccountPage } = require('../../pages/AccountPage');
-const { HomePage } = require('../../pages/HomePage');
-const { searchTerm } = require('../../data/search.json');
-const { user } = require('../../data/login.json');
+import { test } from '@playwright/test';
+import { LoginPage } from '../../pages/LoginPage';
+import { AccountPage } from '../../pages/AccountPage';
+import { HomePage } from '../../pages/HomePage';
+import { searchTerm } from '../../data/search.json';
+import { user } from '../../data/login.json';
 
 test.describe('Search', () => {
   test.beforeEach(async ({ page }) => {
@@ -13,7 +13,7 @@ test.describe('Search', () => {
     await new AccountPage(page).expectLoaded();
   });
 
-  test('search for Thor Hammer', async ({ page }) => {
+  test('TC -03 search for Thor Hammer', async ({ page }) => {
     const home = new HomePage(page);
     await home.open();
     await home.search(searchTerm);

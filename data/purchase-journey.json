@@ -1,5 +1,5 @@
 {
-  "user": { "email": "customer@practicesoftwaretesting.com", "password": "welcome01", "fullName": "Jane Doe" },
+  "user": { "email": "customer2@practicesoftwaretesting.com", "password": "welcome01", "fullName": "Jane Doe" },
   "searchTerm": "Thor Hammer",
   "productName": "Thor Hammer",
   "billing": {

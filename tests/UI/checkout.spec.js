@@ -1,23 +1,23 @@
-const { test } = require('@playwright/test');
-const { LoginPage } = require('../../pages/LoginPage');
-const { AccountPage } = require('../../pages/AccountPage');
-const { HomePage } = require('../../pages/HomePage');
-const { ProductPage } = require('../../pages/ProductPage');
-const { CheckoutPage } = require('../../pages/CheckoutPage');
-const { NavBar } = require('../../pages/NavBar');
-const data = require('../../data/checkout.json');
+import { test } from '@playwright/test';
+import { LoginPage } from '../../pages/LoginPage';
+import { AccountPage } from '../../pages/AccountPage';
+import { HomePage } from '../../pages/HomePage';
+import { ProductPage } from '../../pages/ProductPage';
+import { CheckoutPage } from '../../pages/CheckoutPage';
+import { NavBar } from '../../pages/NavBar';
+import { user, searchTerm, productName, quantity as _quantity, billing, card } from '../../data/checkout.json';
 
 test.describe('Checkout', () => {
   test.beforeEach(async ({ page }) => {
     const loginPage = new LoginPage(page);
     await loginPage.open();
-    await loginPage.login(data.user.email, data.user.password);
+    await loginPage.login(user.email, user.password);
     await new AccountPage(page).expectLoaded();
 
     const home = new HomePage(page);
     await home.open();
-    await home.search(data.searchTerm);
-    await home.expectSingleResultNamed(data.productName);
+    await home.search(searchTerm);
+    await home.expectSingleResultNamed(productName);
     await home.openSingleResult();
     const product = new ProductPage(page);
     await product.addToCart();
@@ -29,18 +29,18 @@ test.describe('Checkout', () => {
     const checkout = new CheckoutPage(page);
 
     await nav.openCart();
-    await checkout.expectSingleLine({ name: data.productName, quantity: data.quantity });   // 1
+    await checkout.expectSingleLine({ name: productName, quantity: _quantity });   // 1
     await checkout.proceedFromCart();
 
     await checkout.expectSignInSkipped();                                                   // 2
     await checkout.proceedFromSignIn();
 
   await checkout.proceedFromSignIn();
-await checkout.expectBillingPrefilled(data.billing);   // before filling
-await checkout.fillBillingAddress(data.billing);
+await checkout.expectBillingPrefilled(billing);   // before filling
+await checkout.fillBillingAddress(billing);
 await checkout.proceedFromBilling();
 
-    await checkout.pay(data.card);
+    await checkout.pay(card);
     await checkout.expectPaymentSuccessful();                                               // 4
     await checkout.confirmOrder();
   const invoice = await checkout.expectOrderConfirmedWithInvoice();                       // 5

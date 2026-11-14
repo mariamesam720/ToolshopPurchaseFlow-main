@@ -1,12 +1,12 @@
-const {test, expect} = require('@playwright/test');
-const { RegisterPage } = require('../../pages/RegisterPage.js');
-const registrationData = require('../../data/registration.json');
-const { uniqueEmail } = require('../../utils/helpers.js');
+import { test, expect } from '@playwright/test';
+import { RegisterPage } from '../../pages/RegisterPage.js';
+import { user as _user } from '../../data/registration.json';
+import { uniqueEmail } from '../../utils/helpers.js';
 
 
 test.describe('Registration Tests', () => {
   test('TC-01: Register a new user', async ({ page }) => {
-    const user = { ...registrationData.user, email: uniqueEmail() };
+    const user = { ..._user, email: uniqueEmail() };
 
     const registerPage = new RegisterPage(page);
 

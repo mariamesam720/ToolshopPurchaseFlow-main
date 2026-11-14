@@ -1,11 +1,11 @@
-const { test } = require('@playwright/test');
-const { LoginPage } = require('../../pages/LoginPage');
-const { AccountPage } = require('../../pages/AccountPage');
-const { HomePage } = require('../../pages/HomePage');
-const { ProductPage } = require('../../pages/ProductPage');
-const { CheckoutPage } = require('../../pages/CheckoutPage');
-const { NavBar } = require('../../pages/NavBar');
-const { user, searchTerm, productName, quantity , productPrice } = require('../../data/cart.json');
+import { test } from '@playwright/test';
+import { LoginPage } from '../../pages/LoginPage';
+import { AccountPage } from '../../pages/AccountPage';
+import { HomePage } from '../../pages/HomePage';
+import { ProductPage } from '../../pages/ProductPage';
+import { CheckoutPage } from '../../pages/CheckoutPage';
+import { NavBar } from '../../pages/NavBar';
+import { user, searchTerm, productName, quantity, productPrice } from '../../data/cart.json';
 
 async function login(page) {
   const loginPage = new LoginPage(page);

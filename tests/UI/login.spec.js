@@ -1,21 +1,24 @@
-const {expect , test} = require('@playwright/test');
-const { LoginPage } = require('../../pages/LoginPage.js');
-const { RegisterPage } = require('../../pages/RegisterPage.js');
-const registrationData = require('../../data/registration.json');
-const {NavBar} = require('../../pages/NavBar.js');
-const { AccountPage } = require('../../pages/AccountPage.js');
+import { test } from '@playwright/test';
+import { RegisterPage } from '../../pages/RegisterPage';
+import { LoginPage } from '../../pages/LoginPage';
+import { AccountPage } from '../../pages/AccountPage';
+import { NavBar } from '../../pages/NavBar';
+import { uniqueEmail } from '../../utils/helpers';
+import { user as _user } from '../../data/registration.json';
+test.describe('Login', () => {
+  let user;
 
-test.describe('Login Tests', () => {
-  test('Login with valid credentials', async ({ page }) => {
-    const loginPage = new LoginPage(page);
+  test.beforeEach(async ({ page }) => {
+    user = { ..._user, email: uniqueEmail() };
     const registerPage = new RegisterPage(page);
-      const navbar = new NavBar(page);
-    const user = registrationData.user;
-    
-    await loginPage.open();
-    await loginPage.login(user.email, user.password);
-    await loginPage.expectOnLoginPage();
-    await navbar.expectUserName(user.firstName);
+    await registerPage.open();
+    await registerPage.register(user);
+    await registerPage.expectRedirectedToLogin();
+  });
 
-  })
-})
+  test('TC-02 login with valid credentials', async ({ page }) => {
+    await new LoginPage(page).login(user.email, user.password);
+    await new AccountPage(page).expectLoaded();
+    await new NavBar(page).expectUserName(`${user.firstName} ${user.lastName}`);
+  });
+});
