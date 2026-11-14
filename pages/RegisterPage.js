@@ -20,19 +20,30 @@ class RegisterPage {
 async open() { await this.page.goto('/auth/register'); }
 // actions 
 async register(user) {
-    await this.firstName.fill(user.firstName);
-    await this.lastName.fill(user.lastName);
-    await this.dateOfBirth.fill(user.dateOfBirth);
-    await this.street.fill(user.street);
-    await this.postalCode.fill(user.postalCode);
-    await this.houseNumber.fill(user.houseNumber);
-    await this.city.fill(user.city);
-    await this.state.fill(user.state);
-    await this.country.selectOption(user.country);
-    await this.phone.fill(user.phone);
-    await this.email.fill(user.email);
-    await this.password.fill(user.password);
-    await this.submit.click();
+  await this.firstName.fill(user.firstName);
+  await this.lastName.fill(user.lastName);
+  await this.dateOfBirth.fill(user.dateOfBirth);
+
+  // the site fills street, city and state from these three fields
+  await this.country.selectOption({ label: user.country });
+  await this.postalCode.fill(user.postalCode);
+  await this.houseNumber.fill(user.houseNumber);
+
+  await expect(this.street).toHaveValue(/.+/);
+  await expect(this.city).toHaveValue(/.+/);
+  await expect(this.state).toHaveValue(/.+/);
+  const address = {
+    street: await this.street.inputValue(),
+    city: await this.city.inputValue(),
+    state: await this.state.inputValue(),
+  };
+
+  await this.phone.fill(user.phone);
+  await this.email.fill(user.email);
+  await this.password.fill(user.password);
+  await this.submit.click();
+
+  return address;
 }
 // assertions
 async expectRedirectedToLogin() { await expect(this.page).toHaveURL(/\/auth\/login/); }

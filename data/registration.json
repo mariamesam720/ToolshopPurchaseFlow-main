@@ -3,14 +3,10 @@
     "firstName": "Trainee",
     "lastName": "Tester",
     "dateOfBirth": "1990-05-15",
-    "street": "Main Street 1",
+    "country": "Egypt",
     "postalCode": "12345",
     "houseNumber": "123",
-    "city": "Cairo",
-    "state": "Giza",
-    "country": "EG",
     "phone": "0123456789",
-    "email": "traineee.tester@example.com",
     "password": "Str0ng!Passw0rd#2026"
   }
 }
