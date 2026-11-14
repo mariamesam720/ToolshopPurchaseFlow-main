@@ -6,6 +6,7 @@
   "billing": {
     "street": "Test street 98",
     "city": "Vienna",
+     "country": "Austria",
     "state": "New Jersey",
     "houseNumber": "98",
     "postalCode": "1010"

@@ -35,9 +35,10 @@ test.describe('Checkout', () => {
     await checkout.expectSignInSkipped();                                                   // 2
     await checkout.proceedFromSignIn();
 
-    /*await checkout.expectBillingPrefilled(data.billing);                                    // 3
-    await checkout.expectBillingPrefilled(data.billing);                                  
-    await checkout.proceedFromBilling();*/
+  await checkout.proceedFromSignIn();
+await checkout.expectBillingPrefilled(data.billing);   // before filling
+await checkout.fillBillingAddress(data.billing);
+await checkout.proceedFromBilling();
 
     await checkout.pay(data.card);
     await checkout.expectPaymentSuccessful();                                               // 4

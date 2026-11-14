@@ -1,0 +1,1 @@
+{"errors":[{"environment":"default","message":"The test run was interrupted. Some tests may not have run."}],"attachments":[],"exitCode":{"original":0,"actual":1},"errorsByEnv":{"default":[{"environment":"default","message":"The test run was interrupted. Some tests may not have run."}]}}
