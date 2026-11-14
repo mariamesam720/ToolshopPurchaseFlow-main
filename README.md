@@ -4,7 +4,7 @@
 
 **Option 1: clone with Git**
 ```bash
-git clone https://github.com/mariamesam720/ToolshopPurchaseFlow
+git clone https://github.com/mariamesam720/ToolshopPurchaseFlow-main
 cd ToolshopPurchaseFlow
 ```
 `
